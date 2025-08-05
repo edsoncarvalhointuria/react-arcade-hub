@@ -1,6 +1,6 @@
 # 🕹️ React Arcade Hub
 
-![Uploading 0805 (1).gif…](Jogo em ação)
+![0805 (1)](https://github.com/user-attachments/assets/faa3933d-ed19-4257-92e7-bc022529cbc9)
 
 ---
 
