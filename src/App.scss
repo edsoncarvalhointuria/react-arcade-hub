@@ -1,0 +1,307 @@
+// --- Variáveis de Design ---
+$menu-font-size: 2rem;
+$menu-line-height: 4rem;
+$cursor-color: #00ffff;
+$selected-color: #ffffff;
+$unselected-color: #555555;
+
+$button-bg: #1a1a1a;
+$button-border: #ffffff;
+$button-text: #ffffff;
+$button-shadow: #000000;
+$button-hover-bg: #2a2a2a;
+$button-active-bg: #000000;
+#game-hub {
+    height: 100dvh;
+    overflow: hidden;
+    background-color: black;
+    display: grid;
+
+    & .game-container {
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        position: relative;
+        transition: all 1s ease, filter ease-in-out 0.5s;
+
+        &--pause {
+            filter: blur(15px);
+        }
+        &.prev {
+            transform: translate(50%, 0);
+        }
+        &.next {
+            transform: translate(-50%, 0);
+        }
+        &.show {
+            // display: block;
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    & .state {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        top: 0;
+        left: 0;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                    rgba(18, 16, 16, 0) 50%,
+                    rgba(0, 0, 0, 0.25) 50%
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(255, 0, 0, 0.06),
+                    rgba(0, 255, 0, 0.02),
+                    rgba(0, 0, 255, 0.06)
+                );
+            background-size: 100% 3px, 4px 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                to bottom,
+                transparent 0%,
+                rgba(0, 0, 0, 0.2) 50%,
+                transparent 100%
+            );
+            background-size: 100% 4px; // Altura de cada "onda"
+            animation: scanline-effect 8s linear infinite;
+            z-index: 3; // Fica na frente do efeito CRT, mas atrás do texto
+            pointer-events: none;
+        }
+
+        &__container {
+            position: relative;
+            font-size: 2.4rem;
+            font-weight: bold;
+            color: $unselected-color;
+            letter-spacing: 0.2rem;
+            font-family: "Press Start 2P", cursive;
+            display: flex;
+            flex-flow: column;
+            align-items: center;
+            gap: 0.5em;
+
+            &--game-over-derrota {
+                color: $selected-color;
+                text-shadow: 0 0 8px black, 0 0 16px red;
+            }
+
+            &--game-over-vitoria {
+                // 1. Crie um fundo gradiente com cores vibrantes e festivas.
+                // Usamos um tamanho de fundo grande para que a animação tenha espaço para se mover.
+                background: linear-gradient(
+                    90deg,
+                    #ffeb3b,
+                    #00ffff,
+                    #ff00ff,
+                    #ffeb3b
+                );
+                background-size: 300% 100%;
+
+                -webkit-background-clip: text;
+                background-clip: text;
+
+                -webkit-text-fill-color: transparent;
+                color: transparent;
+
+                animation: vitoria-text-animation 2s ease-in-out infinite;
+
+                // A sombra agora pode ser mais sutil, apenas para dar profundidade.
+                text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+                text-align: center;
+                line-height: 1.5;
+            }
+
+            &__jogar-novamente {
+                font-family: "Share Tech Mono", monospace;
+                font-size: 1.2rem;
+                font-weight: bold;
+                color: $button-text;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                position: relative;
+                top: 5rem;
+
+                // Layout e Espaçamento
+                padding: 1rem 2rem;
+
+                // Bordas e Fundo
+                background-color: $button-bg;
+                border: 2px solid $button-border;
+                // A mágica da borda dupla/pixelada
+                box-shadow: inset 0 0 0 2px $button-shadow,
+                    inset 0 0 0 4px $button-border, 5px 5px 0 0 $button-shadow;
+
+                cursor: pointer;
+                transition: all 0.1s ease-out;
+
+                // --- Efeitos de Interação ---
+
+                &:hover {
+                    background-color: $button-hover-bg;
+                    // Move o botão um pouco para cima e para a esquerda
+                    transform: translate(-2px, -2px);
+                    // Diminui a sombra para dar a sensação de "flutuar"
+                    box-shadow: inset 0 0 0 2px $button-shadow,
+                        inset 0 0 0 4px $button-border,
+                        7px 7px 0 0 $button-shadow;
+                }
+
+                &:active {
+                    // Move o botão para a posição da sombra, criando o efeito de "pressionar"
+                    transform: translate(5px, 5px);
+                    // Remove a sombra externa
+                    box-shadow: inset 0 0 0 2px $button-shadow,
+                        inset 0 0 0 4px $button-border;
+                    background-color: $button-active-bg;
+                }
+            }
+        }
+
+        &__option {
+            text-align: center;
+            display: inline;
+            font-size: $menu-font-size;
+            line-height: $menu-line-height;
+            color: $unselected-color;
+            cursor: pointer;
+            transition: all 0.2s ease-out;
+            &.select {
+                color: $selected-color;
+                text-shadow: 0 0 8px $selected-color, 0 0 16px $cursor-color;
+                transform: scale(1.05);
+            }
+
+            &.ranking {
+                color: #ffd700; // Dourado Neon
+                text-shadow: 0 0 8px #ffd700, 0 0 16px #ffa500;
+
+                &.select {
+                    color: #ffff00; // Amarelo Neon
+                    text-shadow: 0 0 8px #ffff00, 0 0 16px #ffffff;
+                }
+            }
+        }
+
+        &__arrow-select {
+            display: block;
+            position: absolute;
+            font-size: $menu-font-size;
+            color: $cursor-color;
+            text-shadow: 0 0 10px $cursor-color;
+
+            // A mágica da animação!
+            transition: top 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+                left 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        &.hidden {
+            display: none;
+        }
+    }
+
+    & .instructions {
+        padding: 4rem 10rem;
+        width: 100%;
+        justify-content: space-between;
+        bottom: 0;
+        position: absolute;
+        display: flex;
+        align-items: center;
+
+        &.hidden {
+            display: none;
+        }
+
+        &__controls {
+            display: grid;
+            justify-items: center;
+            gap: 0.5rem;
+
+            &--text {
+                letter-spacing: 0.2rem;
+                font-size: 1.4rem;
+            }
+
+            &.hidden {
+                display: none;
+            }
+
+            &.esc {
+                z-index: 3;
+            }
+        }
+
+        &__help {
+            display: grid;
+            gap: 1.5rem;
+            &--arrows {
+                display: flex;
+                gap: 4rem;
+                flex-wrap: wrap;
+                z-index: 2;
+            }
+
+            &--text {
+                display: grid;
+                font-size: 1.4rem;
+                justify-items: center;
+                letter-spacing: 0.2rem;
+            }
+
+            &.hidden {
+                display: none;
+            }
+
+            & button {
+                background: none;
+                border: none;
+            }
+        }
+    }
+}
+
+@keyframes scanline-effect {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: 0 -400px; // Move as linhas para cima
+    }
+}
+
+@keyframes vitoria-text-animation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}

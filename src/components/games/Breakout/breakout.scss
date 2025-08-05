@@ -1,0 +1,57 @@
+.breakout {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+    &.hidden {
+        display: none;
+    }
+
+    &__canvas {
+        z-index: 1;
+        border-left: 10px solid #333;
+        border-right: 10px solid #333;
+        // border-style: outset;
+        color: rgb(210, 210, 210);
+
+        @media all and (max-width: 30em) {
+            border-width: 2px;
+        }
+    }
+
+    &__score {
+        position: absolute;
+        top: 10%;
+        transform: translateX(-50%);
+        display: grid;
+        gap: 1rem;
+        place-items: center;
+        place-content: center;
+        font-family: "Luckiest Guy", cursive;
+
+        &--title {
+            font-size: 3rem;
+
+            @media all and (max-width: 30em) {
+                font-size: 2rem;
+            }
+        }
+    }
+
+    &__powers-active {
+        position: absolute;
+        transform: translateX(-50%);
+        display: grid;
+        gap: 1rem;
+        animation: power-active 1.5s infinite ease-in;
+        svg {
+            width: 5rem;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            border: white 1px solid;
+        }
+    }
+}

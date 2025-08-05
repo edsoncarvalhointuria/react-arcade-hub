@@ -1,0 +1,242 @@
+.pong {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+
+    &.hidden {
+        display: none;
+    }
+
+    &.shrink-effect {
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(255, 255, 255, 0.15),
+                rgba(255, 255, 255, 0.15) 2px,
+                transparent 2px,
+                transparent 6px
+            );
+            animation: shrink-effect 0.5s steps(4, end) infinite;
+            z-index: 1;
+        }
+    }
+
+    &.slow-effect {
+        box-shadow: inset 0 0 100px 50px rgba(255, 255, 255, 0.7);
+
+        animation: slow-animation 2s infinite ease-in-out;
+    }
+
+    &.super-shot-effect {
+        &--apontar {
+            animation: super-shot-apontar-animation 1.5s infinite ease-in-out;
+            box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.7);
+        }
+        &--fogo {
+            animation: super-shot-fogo-animation 0.5s steps(3, end) forwards;
+        }
+    }
+
+    &__canvas {
+        z-index: 1;
+    }
+
+    &__titulo {
+        padding: 4rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5rem;
+        color: white;
+        font-size: 4.2rem;
+    }
+
+    &__score {
+        &--jogador,
+        &--oponente {
+            position: absolute;
+            font-family: "Press Start 2P", system-ui;
+            color: rgba(255, 255, 255, 0.3);
+            z-index: 2;
+        }
+
+        &--dark {
+            opacity: 0;
+            z-index: 2;
+            color: white;
+            text-shadow: 0 0 5rem white;
+
+            &.score-flash {
+                animation: score-flash 3s ease-in-out forwards;
+            }
+        }
+    }
+
+    canvas {
+        z-index: 1;
+    }
+}
+
+.pong--mobile {
+    transform: rotate(90deg) translateX(-45%);
+
+    &.shrink-effect {
+        &::before {
+            content: "";
+            position: absolute;
+
+            width: 100dvh;
+            height: 100dvw;
+            top: 25%;
+            left: -3%;
+            background: repeating-linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0.15),
+                rgba(255, 255, 255, 0.15) 2px,
+                transparent 2px,
+                transparent 6px
+            );
+            animation: shrink-effect 0.5s steps(4, end) infinite;
+            z-index: 1;
+        }
+    }
+
+    &.slow-effect {
+        box-shadow: none;
+        animation: none;
+
+        &::after {
+            content: "";
+            position: absolute;
+            z-index: 0;
+            width: 100dvh;
+            height: 100dvw;
+            transform: translateX(23%);
+            animation: slow-animation 2s infinite ease-in-out;
+        }
+    }
+
+    &.super-shot-effect {
+        &--apontar {
+            animation-name: none;
+            box-shadow: none;
+            &::after {
+                content: "";
+                position: absolute;
+                z-index: 0;
+                width: 100dvh;
+                height: 100dvw;
+                transform: translateX(23%);
+                animation: super-shot-apontar-animation 1.5s infinite
+                    ease-in-out;
+            }
+        }
+
+        &--fogo {
+            animation-name: super-shot-fogo-animation-mobile;
+        }
+    }
+}
+
+@keyframes slow-animation {
+    0% {
+        box-shadow: inset 0 0 10rem 5rem rgba(255, 255, 255, 0.6),
+            inset 0 0 20rem 10rem rgba(255, 255, 255, 0.2);
+    }
+    50% {
+        box-shadow: inset 5rem 0rem 12rem 6rem rgba(255, 255, 255, 0.2),
+            inset 5rem 0rem 24rem 12rem rgba(255, 255, 255, 0.1);
+    }
+    100% {
+        box-shadow: inset 0 0 10rem 5rem rgba(255, 255, 255, 0.6),
+            inset 0 0 20rem 10rem rgba(255, 255, 255, 0.2);
+    }
+}
+
+@keyframes super-shot-apontar-animation {
+    0% {
+        box-shadow: inset 0 0 15px 5px rgba(255, 255, 255, 0.7);
+    }
+    50% {
+        box-shadow: inset 0 0 25px 10px rgba(255, 255, 255, 0.9);
+    }
+    100% {
+        box-shadow: inset 0 0 15px 5px rgba(255, 255, 255, 0.7);
+    }
+}
+
+@keyframes super-shot-fogo-animation {
+    0% {
+        filter: invert(0) grayscale(0);
+        transform: translateX(0);
+    }
+    33% {
+        filter: invert(1) grayscale(1);
+        transform: translateX(-3rem);
+    }
+    66% {
+        filter: invert(0) grayscale(0);
+        transform: translateX(3rem);
+    }
+    100% {
+        filter: invert(0) grayscale(0);
+        transform: translateX(0);
+    }
+}
+
+@keyframes shrink-effect {
+    0% {
+        background-position: 0 0;
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    100% {
+        background-position: 0 1rem;
+        opacity: 0;
+    }
+}
+
+@keyframes score-flash {
+    0% {
+        opacity: 0;
+        text-shadow: 0 0 5rem white;
+    }
+    50% {
+        opacity: 1;
+        text-shadow: 0 0 5rem white;
+    }
+    100% {
+        opacity: 0;
+        text-shadow: 0 0 5rem white;
+    }
+}
+
+// Versões Mobile
+@keyframes super-shot-fogo-animation-mobile {
+    0% {
+        filter: invert(0) grayscale(0);
+        transform: rotate(90deg) translate(-45%, 0);
+    }
+    33% {
+        filter: invert(1) grayscale(1);
+        transform: rotate(90deg) translate(-45%, -3rem);
+    }
+    66% {
+        filter: invert(0) grayscale(0);
+        transform: rotate(90deg) translate(-45%, 3rem);
+    }
+    100% {
+        filter: invert(0) grayscale(0);
+        transform: rotate(90deg) translate(-45%, 0);
+    }
+}

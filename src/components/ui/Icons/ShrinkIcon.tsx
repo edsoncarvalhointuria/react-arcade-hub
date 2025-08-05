@@ -1,0 +1,16 @@
+import "./shrink-icon.scss";
+
+function ShrinkIcon({ className = "" }: { className?: string }) {
+    return (
+        <svg
+            className={`${className} shrink`}
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+        >
+            <path d="M20,21a1,1,0,0,0,1-1V4a1,1,0,0,0-1-1H4A1,1,0,0,0,3,4V20a1,1,0,0,0,1,1ZM5,5H19V19H10V15a1,1,0,0,0-1-1H5Zm6.077,7.382A1.01,1.01,0,0,1,11,12V8.5a1,1,0,0,1,2,0V9.586l2.793-2.793a1,1,0,1,1,1.414,1.414L14.414,11H15.5a1,1,0,0,1,0,2H12a1.01,1.01,0,0,1-.382-.077A1,1,0,0,1,11.077,12.382Z" />
+        </svg>
+    );
+}
+
+export default ShrinkIcon;

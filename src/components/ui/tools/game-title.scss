@@ -1,0 +1,21 @@
+.title {
+    font-size: 6rem;
+    position: relative;
+    letter-spacing: 0.5rem;
+    top: -15%;
+    z-index: 1;
+
+    &--pong {
+        font-family: "Bungee Inline", cursive;
+    }
+    &--breakout {
+        font-family: "Luckiest Guy", cursive;
+    }
+    &--invaders {
+        font-family: "VT323", monospace;
+    }
+
+    &--ranking {
+        top: -5%;
+    }
+}

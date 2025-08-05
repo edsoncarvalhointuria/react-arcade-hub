@@ -1,0 +1,4 @@
+@import "./_powers-pong.variables";
+.slow {
+    @extend %power-up-icon;
+}

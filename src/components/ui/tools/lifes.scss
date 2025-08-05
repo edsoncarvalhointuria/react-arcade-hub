@@ -1,0 +1,30 @@
+.lifes {
+    position: absolute;
+    z-index: 2;
+    bottom: 0;
+    margin-bottom: 0.5rem;
+    display: flex;
+    gap: 1rem;
+
+    &__life {
+        &.lost {
+            svg {
+                fill: darkslategrey;
+            }
+        }
+    }
+
+    &--mobile {
+        &.lifes__pong {
+            bottom: 25%;
+            left: 80%;
+        }
+    }
+
+    &.lifes__breakout,
+    &.lifes__invaders {
+        flex-direction: column;
+        top: 5%;
+        transform: translate(50%, 0%);
+    }
+}

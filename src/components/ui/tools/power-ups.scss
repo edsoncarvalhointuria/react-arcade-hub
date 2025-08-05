@@ -1,0 +1,117 @@
+$icon-size: 4.5rem;
+$cooldown-color: rgba(0, 0, 0, 0.8);
+$shine-color: rgba(255, 255, 255, 0.8);
+$shine-duration: 0.7s;
+
+.power-ups {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1rem;
+    height: 100%;
+    justify-content: space-around;
+    align-items: center;
+
+    &__power-up {
+        display: grid;
+        place-items: center;
+        place-content: center;
+        font-size: 2rem;
+        position: relative;
+
+        padding: 0.5rem 1.5rem;
+        border-radius: 50%;
+        border: 0.2rem white solid;
+
+        &.ativo {
+            box-shadow: 0 0 1rem 0.1rem white;
+            &::after {
+                content: "";
+                display: block;
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                z-index: 1;
+                border-radius: 50%;
+                background: conic-gradient(
+                    rgba(0, 0, 0, 0.9) var(--progress),
+                    transparent 0
+                );
+                animation: fill 3s forwards linear;
+            }
+        }
+
+        &.cooldown {
+            &::after {
+                content: "";
+                display: block;
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                z-index: 1;
+                border-radius: 50%;
+                background: conic-gradient(
+                    rgba(0, 0, 0, 0.9) 100%,
+                    transparent 0
+                );
+            }
+        }
+
+        & .quantidade {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: translate(-10%, -10%);
+            color: white;
+            background-color: black;
+            border-radius: 50%;
+            padding: 0.5rem 0.7rem;
+            font-size: 1.2rem;
+            border: 1px solid white;
+            z-index: 2;
+        }
+    }
+
+    &--dark {
+        & .power-ups__power-up {
+            border: none;
+            opacity: 0;
+
+            &.power-flash {
+                animation: power-flash 3s ease-out forwards;
+            }
+        }
+    }
+
+    &--mobile {
+        & .power-ups__power-up {
+            font-size: 0rem;
+            padding: 1rem 1rem;
+            & svg {
+                width: 12rem;
+            }
+        }
+    }
+}
+
+@keyframes fill {
+    @for $i from 0 through 100 {
+        #{$i}% {
+            --progress: #{$i}%;
+        }
+    }
+}
+
+@keyframes power-flash {
+    0% {
+        opacity: 0;
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+    }
+    50% {
+        opacity: 1;
+        box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0);
+    }
+    100% {
+        opacity: 0;
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    }
+}

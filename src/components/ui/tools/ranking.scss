@@ -1,0 +1,73 @@
+.ranking-screen {
+    max-width: 600px;
+    padding: 2rem;
+    background-color: rgba(10, 10, 10, 0.8);
+    border: 2px solid white;
+    backdrop-filter: blur(3px);
+    color: #a5a5a5;
+    z-index: 4;
+
+    table {
+        width: 100%;
+        border-collapse: collapse; // Remove espaços entre as células
+        text-align: center;
+    }
+
+    th,
+    td {
+        padding: 0.75rem;
+        letter-spacing: 2px;
+    }
+}
+
+// --- Tema do PONG ---
+.ranking-game--pong {
+    font-family: "Bungee Inline", monospace;
+    border-color: #00ffff;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+
+    .ranking-screen__head {
+        color: #00ffff;
+    }
+
+    .ranking-screen__item--rank {
+        text-shadow: 0 0 5px #00ffff;
+    }
+}
+
+// --- Tema do BREAKOUT ---
+.ranking-game--breakout {
+    font-family: "Luckiest Guy", cursive;
+    font-size: 1.2rem;
+    border: 4px solid #333;
+    border-style: outset;
+    color: rgb(210, 210, 210);
+
+    .ranking-screen__head {
+        background-color: #333;
+        color: #fff;
+    }
+
+    // Cores alternadas para as linhas, como os tijolos
+    .ranking-screen__item:nth-child(odd) {
+        background-color: rgba(255, 235, 59, 0.5); // Amarelo
+    }
+    .ranking-screen__item:nth-child(even) {
+        background-color: rgba(233, 30, 99, 0.5); // Rosa
+    }
+}
+
+// --- Tema do INVADERS ---
+.ranking-game--invaders {
+    font-family: "Press Start 2P", cursive;
+    background-color: #000;
+    border-color: #39ff14; // Verde "fósforo"
+
+    .ranking-screen__head {
+        color: #39ff14;
+    }
+
+    td {
+        text-shadow: 0 0 8px rgba(57, 255, 20, 0.7);
+    }
+}

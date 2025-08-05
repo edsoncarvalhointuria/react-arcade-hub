@@ -1,0 +1,104 @@
+// No seu high-score-input.scss
+
+// --- Variáveis de Design ---
+$active-color: #00ffff; // Ciano vibrante
+$inactive-color: #555555;
+$arrow-size: 10px; // Tamanho das setas
+
+.high-score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    font-family: "Press Start 2P", cursive;
+    color: white;
+
+    &__pontos {
+        font-size: 1.5rem;
+        span {
+            color: $active-color;
+            text-shadow: 0 0 5px $active-color;
+        }
+    }
+
+    &__prompt {
+        font-size: 1rem;
+        color: $inactive-color;
+        letter-spacing: 2px;
+    }
+
+    &__letras {
+        display: flex;
+        gap: 2rem;
+    }
+
+    &__letra {
+        font-size: 4rem;
+        width: 4rem;
+        height: 4rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: $inactive-color;
+        position: relative; // Essencial para as setas
+        transition: color 0.2s ease;
+        outline: none;
+
+        &.active {
+            & .high-score__letra {
+                &-seta-cima,
+                &-seta-baixo {
+                    outline: none;
+                    color: white;
+                    animation: blink-effect 1.5s infinite steps(1, end);
+                    position: absolute;
+                    left: 50%;
+                    transform: translateX(-65%);
+                    width: 0;
+                    height: 0;
+                    border-left: $arrow-size solid transparent;
+                    border-right: $arrow-size solid transparent;
+                    opacity: 0.8;
+                    transition: transform 0.1s ease-out;
+                }
+
+                &-seta-cima {
+                    top: -($arrow-size * 2);
+                    border-bottom: $arrow-size solid $active-color;
+
+                    &.up {
+                        transform: translateX(-50%) translateY(-3px);
+                    }
+                }
+
+                &-seta-baixo {
+                    bottom: -($arrow-size * 2);
+                    border-top: $arrow-size solid $active-color;
+
+                    &.down {
+                        transform: translateX(-50%) translateY(3px);
+                    }
+                }
+            }
+        }
+    }
+
+    &__salvar {
+        position: absolute;
+        // right: 0;
+        // top: 0;
+        // transform: translate(300%, 150%);
+        font-size: 1.2rem;
+        display: grid;
+        place-items: start;
+    }
+}
+
+// --- Keyframes para a animação de "piscar" ---
+@keyframes blink-effect {
+    50% {
+        color: $active-color;
+        text-shadow: 0 0 10px $active-color;
+    }
+}

@@ -1,0 +1,5 @@
+@import "./_powers-pong.variables";
+
+.shrink {
+    @extend %power-up-icon;
+}

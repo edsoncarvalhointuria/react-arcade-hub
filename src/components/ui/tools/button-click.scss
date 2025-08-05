@@ -1,0 +1,37 @@
+$button-size: 8rem;
+$red-arcade: #d90429;
+$red-dark: #8d0018;
+.button-click {
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+    z-index: 100;
+    width: $button-size;
+    height: $button-size;
+    background: $red-arcade;
+    border-radius: 50%;
+    border: none;
+
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+
+    display: grid;
+    place-items: center;
+    color: white;
+    font-size: 2.5rem;
+    cursor: pointer;
+
+    transition: box-shadow 0.07s ease-out, transform 0.07s ease-out;
+
+    box-shadow: 0 0.8rem 0 $red-dark, 0 1rem 2rem rgba(0, 0, 0, 0.4);
+
+    &:active {
+        transform: translateY(0.5rem);
+        box-shadow: 0 0.3rem 0 $red-dark, 0 0.5rem 1rem rgba(0, 0, 0, 0.5);
+    }
+
+    display: none;
+    @media (pointer: coarse) {
+        display: grid;
+    }
+}

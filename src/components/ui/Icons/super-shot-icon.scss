@@ -1,0 +1,4 @@
+@import "./_powers-pong.variables";
+.super-shot {
+    @extend %power-up-icon;
+}
