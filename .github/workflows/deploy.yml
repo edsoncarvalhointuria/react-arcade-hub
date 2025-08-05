@@ -1,27 +1,40 @@
-name: Deploy to GitHub Pages
+# Nome do nosso fluxo de trabalho
+name: Deploy React App to GitHub Pages
 
 on:
+  # Roda sempre que você fizer um push para a branch 'main'
   push:
-    branches:
-      - main # Roda sempre que você atualizar a branch 'main'
+    branches: ["main"]
 
-# A MÁGICA ACONTECE AQUI!
-# Damos ao robô a permissão para escrever no repositório.
+  # Permite que você rode este fluxo manualmente pela aba Actions
+  workflow_dispatch:
+
+# Define as permissões que o nosso "robô" terá
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
-  build-and-deploy:
+  # O trabalho de build, que prepara o jogo
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Usa uma versão recente do Node.js
+          cache: 'npm'
 
-      - name: Install and Build 🔧
-        run: |
-          npm install
-          npm run build
-        env:
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Build 🔧
+        run: npm run build
+        env: # Injeta as chaves secretas no processo de build
           VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
           VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}
           VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
@@ -29,7 +42,23 @@ jobs:
           VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}
           VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
 
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+        
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          folder: dist # A pasta onde o Vite coloca o jogo pronto
+          # Faz o upload da pasta 'dist' que o Vite criou
+          path: './dist'
+
+  # O trabalho de deploy, que coloca o jogo no ar
+  deploy:
+    needs: build # Só roda DEPOIS que o 'build' terminar com sucesso
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages 🚀
+        id: deployment
+        uses: actions/deploy-pages@v4
