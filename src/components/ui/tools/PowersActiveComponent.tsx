@@ -7,7 +7,6 @@ import type {
 
 import "./powers-active.scss";
 import { powersIconsComponents } from "../../../config/powerUpAssets";
-import { useState } from "react";
 
 function PowersActiveComponent({
     powersActive,

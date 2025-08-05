@@ -18,7 +18,7 @@ class RaqueteBreakout extends Rect {
         }
     }
 
-    draw(any?: any): void {
+    draw(): void {
         if (this.isSuperShot) {
             this.ctx.save();
             this.ctx.shadowColor = "crimson";

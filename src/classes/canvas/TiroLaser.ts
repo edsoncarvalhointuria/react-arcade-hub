@@ -24,9 +24,9 @@ class TiroLaser extends Rect {
         const pulsacao = Math.sin(this.anguloLaser) * 5;
         this.width = this._width + pulsacao;
     }
-    draw(any?: any): void {
+    draw(): void {
         const cantoX = this.x - this.width / 2;
-        const cantoY = this.y - this.heigth / 2;
+        // const cantoY = this.y - this.heigth / 2;
         this.ctx.beginPath();
         const gradiente = this.ctx.createLinearGradient(
             this.x,

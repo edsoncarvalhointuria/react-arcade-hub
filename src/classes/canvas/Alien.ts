@@ -56,7 +56,7 @@ class Alien extends Rect {
         this.frameAtual = (this.frameAtual + 1) % this.frames;
     }
 
-    update(deltaTime: number, velocidadeX: number, velocidadeY: number) {
+    update(_deltaTime: number, velocidadeX: number, velocidadeY: number) {
         this.x += velocidadeX;
         this.y += velocidadeY;
         this.nextFrame();

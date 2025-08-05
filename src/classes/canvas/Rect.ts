@@ -22,7 +22,7 @@ class Rect extends CanvasObject {
         this._heigth = heigth;
     }
 
-    draw(any?: any): void {
+    draw(_any?: any): void {
         super.draw();
         this.ctx.fillRect(this.x, this.y, this.width, this.heigth);
     }

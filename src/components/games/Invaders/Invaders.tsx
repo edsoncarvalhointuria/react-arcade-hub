@@ -223,8 +223,8 @@ function Invaders({ visible, mode, gameState, onGameOver }: GameProps) {
             const margemLateral = IS_MOBILE ? 5 : 10;
             const espacamento = IS_MOBILE ? 13 : 25;
 
-            const espacoUtil = canvas.width - margemLateral * 2;
-            const totalEspacamento = espacamento * (colunas - 1);
+            // const espacoUtil = canvas.width - margemLateral * 2;
+            // const totalEspacamento = espacamento * (colunas - 1);
             const tamanho = canvas.width * (IS_MOBILE ? 0.03 : 0.025);
 
             for (let linha = 0; linha < linhas; linha++) {
@@ -581,7 +581,7 @@ function Invaders({ visible, mode, gameState, onGameOver }: GameProps) {
                 }
 
                 if (ufo.current?.getRaioLaser) {
-                    const raioLaser = ufo.current.getRaioLaser;
+                    // const raioLaser = ufo.current.getRaioLaser;
                     if (
                         !powersActiveRef.current.shield &&
                         ufo.current.verificarColisaoEDanificar(nave.current!)
@@ -949,7 +949,6 @@ function Invaders({ visible, mode, gameState, onGameOver }: GameProps) {
                             break;
                         case "shield":
                             setShield(3);
-                        default:
                             setPowersActive((v) => ({
                                 ...v,
                                 [powerName]: true,

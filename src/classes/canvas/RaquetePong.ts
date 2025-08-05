@@ -46,7 +46,7 @@ class RaquetePong extends Rect {
         isSuperShot = false,
         isShrink = false,
         mode: string = ""
-    ): void {
+    ) {
         this.ctx.save();
 
         if (isSuperShot || this.hasSuperShot) {

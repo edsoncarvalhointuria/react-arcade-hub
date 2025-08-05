@@ -17,7 +17,7 @@ class Arc extends CanvasObject {
         this._velocidadeY = velocidadeY;
     }
 
-    draw(any?: any) {
+    draw(_any?: any) {
         super.draw();
         this.ctx.arc(this.x, this.y, this.raio, 0, Math.PI * 2);
         this.ctx.fill();

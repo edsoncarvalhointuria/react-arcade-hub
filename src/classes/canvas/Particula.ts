@@ -13,7 +13,7 @@ class Particula extends Arc {
         }
     }
 
-    draw(any?: any): void {
+    draw(): void {
         if (this.vida > 0) super.draw();
     }
 

@@ -24,7 +24,7 @@ class PowerUpDrop extends Rect {
         this.y += this.getVelocidadeY * deltaTime;
     }
 
-    draw(any?: any): void {
+    draw(): void {
         super.draw();
         this.ctx.drawImage(
             this.imagem,
