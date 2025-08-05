@@ -30,7 +30,7 @@ function Lifes({
             style={{ right: position }}
         >
             {pontosOponente
-                ? lifes.map((v, i) => {
+                ? lifes.map((_, i) => {
                       return (
                           <div
                               key={"life" + i}
@@ -42,7 +42,7 @@ function Lifes({
                           </div>
                       );
                   })
-                : lifes.map((v, i) => {
+                : lifes.map((_, i) => {
                       return (
                           <div
                               key={"life" + i}
