@@ -14,6 +14,7 @@ class BolaBreakout extends Arc {
     protected isSuperShot = false;
     protected isElevation = false;
     protected rastroParticulas: Particula[] = [];
+    protected maxVelocidadeY: number;
     constructor(
         canvas: HTMLCanvasElement,
         x: number,
@@ -27,11 +28,13 @@ class BolaBreakout extends Arc {
         protected tijolos: RefObject<Tijolo[]>,
         protected breakSynth?: () => void,
         protected hitSynth?: RefObject<Synth>,
-        protected superShotFogo?: RefObject<Synth>
+        protected superShotFogo?: RefObject<Synth>,
+        protected isMobile = false
     ) {
         super(canvas, x, y, raio, velocidadeX, velocidadeY, cor);
 
         this.velocidadeY = -Math.abs(this.velocidadeY);
+        this.maxVelocidadeY = this.isMobile ? 600 : 700;
     }
 
     private colisaoParede() {
@@ -255,8 +258,12 @@ class BolaBreakout extends Arc {
                     );
                 }
 
-                if (this.isSuperShot || Math.abs(this.velocidadeY) > 700) {
-                    this.velocidadeY = 700 * Math.sign(this.velocidadeY);
+                if (
+                    this.isSuperShot ||
+                    Math.abs(this.velocidadeY) > this.maxVelocidadeY
+                ) {
+                    this.velocidadeY =
+                        this.maxVelocidadeY * Math.sign(this.velocidadeY);
                 }
             }
 

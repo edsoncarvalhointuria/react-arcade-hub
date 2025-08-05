@@ -56,12 +56,12 @@ function getDimencoesTijolo(canvas: HTMLCanvasElement, mode: string) {
 function Breakout({ visible, gameState, mode, onGameOver }: GameProps) {
     //------ Constantes --------
     const IS_MOBILE = isMobileDevice();
-    const TIMER_ADD_TIJOLOS = IS_MOBILE ? 5 : 7;
+    const TIMER_ADD_TIJOLOS = IS_MOBILE ? 3 : 7;
     const GAME_DIMENSIONS = {
         canvasHeigth: window.innerHeight,
         canvasWidth: window.innerWidth - window.innerWidth / 3.5,
     };
-    const VELOCIDADE_TIJOLO = 5;
+    const VELOCIDADE_TIJOLO = IS_MOBILE ? 8 : 5;
     const POWERS = [
         "raquete_gigante",
         "super_shot",
@@ -333,7 +333,8 @@ function Breakout({ visible, gameState, mode, onGameOver }: GameProps) {
             tijolos,
             brickBreakSynth,
             hitSynth as RefObject<Synth>,
-            superShotFogo as RefObject<Synth>
+            superShotFogo as RefObject<Synth>,
+            IS_MOBILE
         );
 
         //------ Tijolos --------

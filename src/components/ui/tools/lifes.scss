@@ -6,6 +6,10 @@
     display: flex;
     gap: 1rem;
 
+    & svg {
+        min-width: 2rem;
+    }
+
     &__life {
         &.lost {
             svg {
@@ -15,9 +19,11 @@
     }
 
     &--mobile {
+        margin-bottom: none;
+        margin-top: 1rem;
         &.lifes__pong {
-            bottom: 25%;
-            left: 80%;
+            top: 25%;
+            left: 85%;
         }
     }
 

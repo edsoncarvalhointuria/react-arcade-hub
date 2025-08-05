@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import "./App.scss";
 import Pong from "./components/games/Pong/Pong";
 import MouseIcon from "./components/ui/Icons/MouseIcon";
@@ -103,27 +103,26 @@ function App() {
         if (gameState === "game-over-derrota") return "Você Perdeu :(";
         return "Clique para iniciar";
     };
-    const onGameOver = (jogadorVenceu: boolean, pontos?: number) => {
-        if (gameMode === "infinite" && !jogadorVenceu) {
-            const currentRanking = rankingLocalStorage.find(
-                (v) => v.game === currentGame
-            )?.ranking;
-
-            if (!currentRanking || currentRanking.length < 10) {
-                setFinalScore(pontos!);
-                setGameState("adicionando-ranking");
-            } else {
-                const record = currentRanking.sort(
-                    (a, b) => a.pontos - b.pontos
-                );
-                if (pontos! > record[0].pontos) {
+    const onGameOver = useCallback(
+        (jogadorVenceu: boolean, pontos?: number) => {
+            if (gameMode === "infinite" && !jogadorVenceu) {
+                if (rankingList.length < 10) {
                     setFinalScore(pontos!);
                     setGameState("adicionando-ranking");
-                } else setGameState("ranking");
-            }
-        } else if (jogadorVenceu) setGameState("game-over-vitoria");
-        else setGameState("game-over-derrota");
-    };
+                } else {
+                    const record = rankingList.sort(
+                        (a, b) => a.pontos - b.pontos
+                    );
+                    if (pontos! > record[0].pontos) {
+                        setFinalScore(pontos!);
+                        setGameState("adicionando-ranking");
+                    } else setGameState("ranking");
+                }
+            } else if (jogadorVenceu) setGameState("game-over-vitoria");
+            else setGameState("game-over-derrota");
+        },
+        [gameMode, rankingList]
+    );
     const onSubmitScore = async (iniciais: string) => {
         // LocalStorage
         setRankingLocalStorage((current) => {
@@ -143,12 +142,16 @@ function App() {
         });
 
         // Firebase
-        saveScoreFirebase(currentGame, iniciais, finalScore);
-        loadScoreFirebase(currentGame).then(setRankingList);
+        saveScoreFirebase(currentGame, iniciais, finalScore).then(() =>
+            loadScoreFirebase(currentGame).then(setRankingList)
+        );
 
         setGameState("ranking");
     };
 
+    useEffect(() => {
+        loadScoreFirebase(currentGame).then(setRankingList);
+    }, [currentGame]);
     useEffect(() => {
         if (rankingLocalStorage.length) save("ranking", rankingLocalStorage);
     }, [rankingLocalStorage]);
@@ -278,10 +281,7 @@ function App() {
             })}
 
             <div className={`state ${gameState === "play" ? "hidden" : ""}`}>
-                <GameTitle
-                    currentGame={currentGame}
-                    isRanking={gameMode === "ranking"}
-                />
+                <GameTitle currentGame={currentGame} gameState={gameState} />
                 {gameState === "game-over-vitoria" ||
                 gameState === "game-over-derrota" ||
                 gameState === "ranking" ? (
