@@ -468,6 +468,14 @@ function Pong({ visible, gameState, mode, onGameOver }: GameProps) {
                     ? `super-shot-effect--${powers.superShotPower.status}`
                     : ""
             }`}
+            style={
+                IS_MOBILE
+                    ? {
+                          transform: `rotate(90deg)`,
+                          top: window.innerHeight / -5,
+                      }
+                    : {}
+            }
             onAnimationEnd={() => {
                 if (
                     powers.superShotPower.status === "fogo" ||

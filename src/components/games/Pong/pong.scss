@@ -86,7 +86,7 @@
 }
 
 .pong--mobile {
-    transform: rotate(90deg) translateX(-39%);
+    transform: rotate(90deg);
 
     &.shrink-effect {
         &::before {
