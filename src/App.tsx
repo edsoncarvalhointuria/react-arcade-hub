@@ -21,6 +21,7 @@ import HighScoreInput from "./components/ui/tools/HighScoreInput";
 import Ranking from "./components/ui/tools/Ranking";
 import { useToneContext } from "./contexts/AudioContext";
 import SpaceIcon from "./components/ui/Icons/SpaceIcon";
+import GitHubLink from "./components/ui/tools/GitHubLink";
 
 function App() {
     const [currentGame, setCurrentGame] = useState<GameList>("Pong");
@@ -245,219 +246,233 @@ function App() {
     };
 
     return (
-        <div
-            id="game-hub"
-            onClick={() => {
-                if (gameState !== "inicial") playPause();
-                startAudio();
-            }}
-        >
-            {games.map((game) => {
-                if (game.name === currentGame) {
-                    const CurrentGameComponent = gamesComponents[game.name];
-                    return (
-                        <div
-                            key={game.name}
-                            className={`game-container ${directionTransition} ${
-                                currentGame === game.name && !isTransitioning
-                                    ? "show"
-                                    : ""
-                            } ${
-                                gameState !== "play"
-                                    ? "game-container--pause"
-                                    : ""
-                            }`}
-                        >
-                            <CurrentGameComponent
-                                gameState={gameStateRef}
-                                visible={game.name === currentGame}
-                                mode={gameMode}
-                                onGameOver={onGameOver}
-                                key={resetCounter}
-                            />
-                        </div>
-                    );
-                }
-            })}
-
-            <div className={`state ${gameState === "play" ? "hidden" : ""}`}>
-                <GameTitle currentGame={currentGame} gameState={gameState} />
-                {gameState === "game-over-vitoria" ||
-                gameState === "game-over-derrota" ||
-                gameState === "ranking" ? (
-                    <GameOverEffects type={currentGame} state={gameState} />
-                ) : (
-                    <></>
-                )}
-
-                <div className="state__container">
-                    {gameState === "inicial" ? (
-                        <>
-                            <div
-                                className="state__arrow-select"
-                                style={{
-                                    top: `${cursorPosition.top + 5}px`,
-                                    left: `${cursorPosition.left - 40}px`,
-                                }}
-                            >
-                                &#10148;
-                            </div>
-                            {games
-                                .find((v) => v.name === currentGame)
-                                ?.options.map((v, i) => (
-                                    <p
-                                        key={v.label}
-                                        className={`state__option ${
-                                            i === currentOptionGame
-                                                ? "select"
-                                                : ""
-                                        } ${
-                                            v.mode === "ranking"
-                                                ? "ranking"
-                                                : ""
-                                        }
-                                    `}
-                                        onMouseOver={() => {
-                                            setCurrentOptionGame(i);
-                                            moveMenu.current?.triggerAttackRelease(
-                                                "C5",
-                                                "16n"
-                                            );
-                                        }}
-                                        onClick={() => {
-                                            startAudio();
-                                            setGameMode(v.mode);
-                                            if (v.mode !== "ranking")
-                                                setGameState("play");
-                                            else {
-                                                setGameState("ranking");
-                                                loadScoreFirebase(
-                                                    currentGame
-                                                ).then(setRankingList);
-                                            }
-                                        }}
-                                        ref={(el) => {
-                                            if (el)
-                                                $gameOptionsRef.current[i] = el;
-                                        }}
-                                    >
-                                        {v.label}
-                                    </p>
-                                ))}
-                        </>
-                    ) : gameState !== "adicionando-ranking" &&
-                      gameState !== "ranking" ? (
-                        <>
-                            <p className={`state__container--${gameState}`}>
-                                {mensagemState()}
-                            </p>
-                            {gameState !== "pause" && gameState !== "play" ? (
-                                <button
-                                    className="state__container__jogar-novamente"
-                                    onClick={() => {
-                                        setResetCounter(
-                                            (current) => current + 1
-                                        );
-                                        setGameState("inicial");
-                                    }}
-                                >
-                                    Jogar Novamente
-                                </button>
-                            ) : (
-                                <></>
-                            )}
-                        </>
-                    ) : gameState === "adicionando-ranking" ? (
-                        <HighScoreInput
-                            onSubmitScore={onSubmitScore}
-                            pontos={finalScore}
-                        />
-                    ) : (
-                        <Ranking
-                            currentGame={currentGame}
-                            rankingList={rankingList}
-                        />
-                    )}
-                </div>
-            </div>
-
+        <>
             <div
-                className={`instructions ${
-                    gameState === "inicial" ||
-                    gameState === "pause" ||
-                    gameState === "ranking"
-                        ? ""
-                        : "hidden"
-                }`}
+                id="game-hub"
+                onClick={() => {
+                    if (gameState !== "inicial") playPause();
+                    startAudio();
+                }}
             >
-                <div
-                    className={`instructions__controls ${
-                        gameState === "pause" || gameState === "ranking"
-                            ? "hidden"
-                            : ""
-                    }`}
-                >
-                    {currentGame !== "Invaders" ? <MouseIcon /> : <></>}
-
-                    {currentGame === "Invaders" ? (
-                        <div className="instructions__help--arrows">
-                            <ArrowIcon className={`left arrow--control`} />
-                            <ArrowIcon className={`arrow--control`} />
-                        </div>
-                    ) : (
-                        <></>
-                    )}
-
-                    {currentGame === "Breakout" ||
-                    currentGame === "Invaders" ? (
-                        <SpaceIcon />
-                    ) : (
-                        <></>
-                    )}
-
-                    <p className="instructions__controls--text">Controles</p>
-                </div>
-                <div
-                    className={`instructions__help ${
-                        gameState === "pause" || gameState === "ranking"
-                            ? "hidden"
-                            : ""
-                    }`}
-                >
-                    <p className="instructions__help--text">Próximo Jogo</p>
-                    <div className="instructions__help--arrows">
-                        <button onClick={() => navigateGame("prev")}>
-                            <ArrowIcon
-                                className={`left ${
-                                    directionTransition === "prev"
-                                        ? "press"
+                {games.map((game) => {
+                    if (game.name === currentGame) {
+                        const CurrentGameComponent = gamesComponents[game.name];
+                        return (
+                            <div
+                                key={game.name}
+                                className={`game-container ${directionTransition} ${
+                                    currentGame === game.name &&
+                                    !isTransitioning
+                                        ? "show"
+                                        : ""
+                                } ${
+                                    gameState !== "play"
+                                        ? "game-container--pause"
                                         : ""
                                 }`}
+                            >
+                                <CurrentGameComponent
+                                    gameState={gameStateRef}
+                                    visible={game.name === currentGame}
+                                    mode={gameMode}
+                                    onGameOver={onGameOver}
+                                    key={resetCounter}
+                                />
+                            </div>
+                        );
+                    }
+                })}
+
+                <div
+                    className={`state ${gameState === "play" ? "hidden" : ""}`}
+                >
+                    <GameTitle
+                        currentGame={currentGame}
+                        gameState={gameState}
+                    />
+                    {gameState === "game-over-vitoria" ||
+                    gameState === "game-over-derrota" ||
+                    gameState === "ranking" ? (
+                        <GameOverEffects type={currentGame} state={gameState} />
+                    ) : (
+                        <></>
+                    )}
+
+                    <div className="state__container">
+                        {gameState === "inicial" ? (
+                            <>
+                                <div
+                                    className="state__arrow-select"
+                                    style={{
+                                        top: `${cursorPosition.top + 5}px`,
+                                        left: `${cursorPosition.left - 40}px`,
+                                    }}
+                                >
+                                    &#10148;
+                                </div>
+                                {games
+                                    .find((v) => v.name === currentGame)
+                                    ?.options.map((v, i) => (
+                                        <p
+                                            key={v.label}
+                                            className={`state__option ${
+                                                i === currentOptionGame
+                                                    ? "select"
+                                                    : ""
+                                            } ${
+                                                v.mode === "ranking"
+                                                    ? "ranking"
+                                                    : ""
+                                            }
+                                    `}
+                                            onMouseOver={() => {
+                                                setCurrentOptionGame(i);
+                                                moveMenu.current?.triggerAttackRelease(
+                                                    "C5",
+                                                    "16n"
+                                                );
+                                            }}
+                                            onClick={() => {
+                                                startAudio();
+                                                setGameMode(v.mode);
+                                                if (v.mode !== "ranking")
+                                                    setGameState("play");
+                                                else {
+                                                    setGameState("ranking");
+                                                    loadScoreFirebase(
+                                                        currentGame
+                                                    ).then(setRankingList);
+                                                }
+                                            }}
+                                            ref={(el) => {
+                                                if (el)
+                                                    $gameOptionsRef.current[i] =
+                                                        el;
+                                            }}
+                                        >
+                                            {v.label}
+                                        </p>
+                                    ))}
+                            </>
+                        ) : gameState !== "adicionando-ranking" &&
+                          gameState !== "ranking" ? (
+                            <>
+                                <p className={`state__container--${gameState}`}>
+                                    {mensagemState()}
+                                </p>
+                                {gameState !== "pause" &&
+                                gameState !== "play" ? (
+                                    <button
+                                        className="state__container__jogar-novamente"
+                                        onClick={() => {
+                                            setResetCounter(
+                                                (current) => current + 1
+                                            );
+                                            setGameState("inicial");
+                                        }}
+                                    >
+                                        Jogar Novamente
+                                    </button>
+                                ) : (
+                                    <></>
+                                )}
+                            </>
+                        ) : gameState === "adicionando-ranking" ? (
+                            <HighScoreInput
+                                onSubmitScore={onSubmitScore}
+                                pontos={finalScore}
                             />
-                        </button>
-                        <button onClick={() => navigateGame("next")}>
-                            <ArrowIcon
-                                className={
-                                    directionTransition === "next"
-                                        ? "press"
-                                        : ""
-                                }
+                        ) : (
+                            <Ranking
+                                currentGame={currentGame}
+                                rankingList={rankingList}
                             />
-                        </button>
+                        )}
                     </div>
                 </div>
+
                 <div
-                    className={`instructions__controls esc ${
-                        gameState !== "pause" && gameState !== "ranking"
-                            ? "hidden"
-                            : ""
+                    className={`instructions ${
+                        gameState === "inicial" ||
+                        gameState === "pause" ||
+                        gameState === "ranking"
+                            ? ""
+                            : "hidden"
                     }`}
                 >
-                    <EscIcon />
-                    <p className="instructions__controls--text">Sair</p>
+                    <div
+                        className={`instructions__controls ${
+                            gameState === "pause" || gameState === "ranking"
+                                ? "hidden"
+                                : ""
+                        }`}
+                    >
+                        {currentGame !== "Invaders" ? <MouseIcon /> : <></>}
+
+                        {currentGame === "Invaders" ? (
+                            <div className="instructions__help--arrows">
+                                <ArrowIcon className={`left arrow--control`} />
+                                <ArrowIcon className={`arrow--control`} />
+                            </div>
+                        ) : (
+                            <></>
+                        )}
+
+                        {currentGame === "Breakout" ||
+                        currentGame === "Invaders" ? (
+                            <SpaceIcon />
+                        ) : (
+                            <></>
+                        )}
+
+                        <p className="instructions__controls--text">
+                            Controles
+                        </p>
+                    </div>
+                    <div
+                        className={`instructions__help ${
+                            gameState === "pause" || gameState === "ranking"
+                                ? "hidden"
+                                : ""
+                        }`}
+                    >
+                        <p className="instructions__help--text">Próximo Jogo</p>
+                        <div className="instructions__help--arrows">
+                            <button onClick={() => navigateGame("prev")}>
+                                <ArrowIcon
+                                    className={`left ${
+                                        directionTransition === "prev"
+                                            ? "press"
+                                            : ""
+                                    }`}
+                                />
+                            </button>
+                            <button onClick={() => navigateGame("next")}>
+                                <ArrowIcon
+                                    className={
+                                        directionTransition === "next"
+                                            ? "press"
+                                            : ""
+                                    }
+                                />
+                            </button>
+                        </div>
+                    </div>
+                    <div
+                        className={`instructions__controls esc ${
+                            gameState !== "pause" && gameState !== "ranking"
+                                ? "hidden"
+                                : ""
+                        }`}
+                    >
+                        <EscIcon />
+                        <p className="instructions__controls--text">Sair</p>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <GitHubLink />
+        </>
     );
 }
 
