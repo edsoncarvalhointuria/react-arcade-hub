@@ -24,6 +24,7 @@ $cor-final: rgba(0, 255, 255, 0.4);
         min-width: 6rem;
         background: $cor-inicial;
         transition: all 1s ease-in;
+        cursor: pointer;
     }
 
     &--show {
