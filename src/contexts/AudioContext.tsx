@@ -306,24 +306,33 @@ function AudioProvider({ children }: PropsWithChildren<{}>) {
     };
 
     const playMusic = (type: "Pong" | "Breakout" | "Invaders") => {
-        switch (type) {
-            case "Pong":
-                musicBreakout.current?.stop();
-                musicInvaders.current?.stop();
-                musicPong.current?.start(0);
-                break;
-            case "Breakout":
-                musicPong.current?.stop();
-                musicInvaders.current?.stop();
-                musicBreakout.current?.start(0);
-                break;
-            case "Invaders":
-                musicPong.current?.stop();
-                musicBreakout.current?.stop();
-                musicInvaders.current?.start(0);
-                break;
+        try {
+            switch (type) {
+                case "Pong":
+                    musicBreakout.current?.stop();
+                    musicInvaders.current?.stop();
+                    musicPong.current?.start(0);
+                    break;
+                case "Breakout":
+                    musicPong.current?.stop();
+                    musicInvaders.current?.stop();
+                    musicBreakout.current?.start(0);
+                    break;
+                case "Invaders":
+                    musicPong.current?.stop();
+                    musicBreakout.current?.stop();
+                    musicInvaders.current?.start(0);
+                    break;
+            }
+            if (Tone.getTransport().state !== "started") {
+                Tone.getTransport().start();
+            }
+        } catch {
+            musicBreakout.current?.stop();
+            musicInvaders.current?.stop();
+            musicPong.current?.stop();
+            Tone.getTransport().stop();
         }
-        Tone.getTransport().start();
     };
     const stopMusic = () => {
         Tone.getTransport().stop();
