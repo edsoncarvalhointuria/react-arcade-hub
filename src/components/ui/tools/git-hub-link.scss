@@ -23,9 +23,9 @@ $cor-final: rgba(0, 255, 255, 0.4);
     &--link {
         min-width: 6rem;
         background: $cor-inicial;
-        transition: all 1s ease-in;
         cursor: pointer;
         z-index: 2;
+        transition: all 1s ease-in;
     }
 
     &--show {
